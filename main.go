@@ -13,6 +13,7 @@ import (
 )
 
 var cfg config.Config
+var topics []string
 
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
 	log.Printf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
@@ -24,6 +25,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 
 var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
 	log.Println("Connected")
+	subscribeTopics(client, topics)
 }
 
 var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err error) {
@@ -62,9 +64,7 @@ func main() {
 		panic(token.Error())
 	}
 
-	topics := config.HandleTopics(cfg.Topics)
-
-	subscribeTopics(client, topics)
+	topics = config.HandleTopics(cfg.Topics)
 
 	// Reacting to signals (interrupt)
 	sigs := make(chan os.Signal, 1)
