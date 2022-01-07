@@ -1,0 +1,11 @@
+{
+    "broker": "mqtt://localhost:1883",
+    "username": "",
+    "password": "",
+    "topics": {
+        "topic1": {
+            "payload1": "command1",
+            "payload2": "command2"
+        }
+    }
+}
