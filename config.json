@@ -4,8 +4,8 @@
     "password": "",
     "topics": {
         "topic1": {
-            "payload1": "command1",
-            "payload2": "command2"
+            "payload1": ["command1", "command2"],
+            "payload2": ["command3"]
         }
     }
 }

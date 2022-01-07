@@ -8,10 +8,10 @@ import (
 )
 
 type Config struct {
-	Broker   string             `json:"broker"`
-	Username string             `json:"username"`
-	Password string             `json:"password"`
-	Topics   map[string]payload `json:"topics"`
+	Broker   string `json:"broker"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Topics   topics `json:"topics"`
 }
 
 func GetConfig() Config {
