@@ -20,12 +20,12 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 
 	command := config.GetCommand(cfg.Topics, msg.Topic(), string(msg.Payload()))
 
-	osExec.Execute(command)
+	go osExec.Execute(command)
 }
 
 var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
 	log.Println("Connected")
-	subscribeTopics(client, topics)
+	go subscribeTopics(client, topics)
 }
 
 var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err error) {
@@ -58,13 +58,13 @@ func main() {
 	opts.OnConnect = connectHandler
 	opts.OnConnectionLost = connectLostHandler
 
+	topics = config.HandleTopics(cfg.Topics)
+
 	client := mqtt.NewClient(opts)
 
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
-
-	topics = config.HandleTopics(cfg.Topics)
 
 	// Reacting to signals (interrupt)
 	sigs := make(chan os.Signal, 1)
